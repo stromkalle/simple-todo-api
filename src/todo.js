@@ -1,18 +1,8 @@
-const uuid = require("uuid/v5");
-const todos = [];
+const uuid = require("uuid/v4");
+let todos = [];
 
 const getTodos = (req, res) => {
-  res.json({ data: todos });
-};
-
-const getTodoById = (req, res) => {
-  const todo = todos.find(todo => todo.id === req.params.id);
-
-  if (todo) {
-    res.json({ data: todo });
-  } else {
-    res.json({ error: "Not found" });
-  }
+  res.json(todos);
 };
 
 const addTodo = (req, res) => {
@@ -26,7 +16,7 @@ const addTodo = (req, res) => {
 
   todos.push({ id: uuid(), title, description });
 
-  res.json({ data: todos });
+  res.json(todos);
 };
 
 const editTodo = (req, res) => {
@@ -43,11 +33,12 @@ const editTodo = (req, res) => {
   }
 
   todos[index] = {
+    id: todos[index].id,
     title: title || todos[index].title,
     description: description || todos[index].description
   };
 
-  res.json({ data: todos });
+  res.json(todos);
 };
 
 const removeTodo = (req, res) => {
@@ -59,12 +50,11 @@ const removeTodo = (req, res) => {
 
   todos = todos.filter(todo => todo.id !== req.params.id);
 
-  return res.json({ data: todos });
+  return res.json(todos);
 };
 
 module.exports = {
   getTodos,
-  getTodoById,
   addTodo,
   editTodo,
   removeTodo
